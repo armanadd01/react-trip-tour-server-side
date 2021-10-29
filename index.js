@@ -68,7 +68,7 @@ async function run(){
 run().catch(console.dir)
 
 app.get('/', (req, res) => {
-    res.send('Server Set Up root derectory');
+    res.send(' Running Server Root derectory');
 });
 
 app.listen(port, () => {
