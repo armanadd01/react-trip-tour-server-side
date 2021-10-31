@@ -22,6 +22,7 @@ async function run(){
         // console.log('connected')
         const database = client.db("TravelSiteAssignment");
         const PlansCollection = database.collection("plans");
+        const OrdersCollection = database.collection("orders")
 
         //Get API
         app.get('/plans', async(req, res) => {
@@ -33,7 +34,6 @@ async function run(){
         app.get('/plans/:id', async(req, res) => {
             const id = req.params.id;
             const query ={_id: objectId(id)};
-            console.log("🚀 ~ file: index.js ~ line 36 ~ app.get ~ id", id)
             const singlePlan = await PlansCollection.findOne(query);
              res.json(singlePlan);
         });
@@ -49,7 +49,12 @@ async function run(){
                  
                  res.json(result);
         });
-
+        app.post("/addorder", async (req, res) => {
+            console.log(req.body);
+            const result = await OrdersCollection.insertOne(req.body);
+            console.log("🚀 ~ file: index.js ~ line 55 ~ app.post ~ result", result)
+            res.send(result);
+          });
         //Delete Single API 
         app.delete('/plans/:id', async(req, res) => {
             const id = req.params.id;
