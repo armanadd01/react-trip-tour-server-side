@@ -73,7 +73,7 @@ async function run(){
             });
             res.send(result);
           });
-
+          //Get my Order
           app.get("/myorder/:email", async (req, res) => {
             const result = await OrdersCollection.find({
               email: req.params.email,
@@ -81,6 +81,17 @@ async function run(){
             console.log(result)
             res.send(result);
           });
+          //Update Order Status
+          app.put('/updateOrder/:id', async (req, res) => {
+            const order = req.body;
+            const options = { upsert: true };
+            const updatedOrder = {
+                $set: { status: order.status }
+            };
+            const updateStatus = await OrdersCollection.updateOne({ _id: ObjectId(req.params.id) }, updatedOrder, options);
+
+            res.json(updateStatus);
+        });
 
           //Add Users
         app.post("/adduser", async (req, res) => {
@@ -91,13 +102,13 @@ async function run(){
           });
 
             
-        // Get Order
+        // Get Users
         app.get("/users", async (req, res) => {
             const result = await UsersCollection.find({}).toArray();
             res.send(result);
             console.log(result);
         });
-        // Delete order
+        // Delete Users
         app.delete("/deleteusers/:id", async (req, res) => {
             console.log(req.params.id);
             const result = await UsersCollection.deleteOne({
